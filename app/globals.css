@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Untuk scrollbar track (background) */
+::-webkit-scrollbar {
+  width: 7px;
+  /* Lebar scrollbar */
+}
+
+/* Untuk thumb (handle) scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  /* Warna background thumb scrollbar */
+  border-radius: 6px;
+  /* Sudut membulat pada thumb */
+}
+
+/* Saat thumb scrollbar dihover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  border-radius: 6px;
+  /* Warna thumb saat dihover */
+}
+
+/* Untuk scrollbar track (background) saat thumb ditekan */
+::-webkit-scrollbar-thumb:active {
+  background: #333;
+  border-radius: 6px;
+  /* Warna thumb saat ditekan */
+}
+
+/* Untuk scrollbar track (background) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+  /* Warna background scrollbar track */
+}
+
+/* Untuk scrollbar track (background) saat thumb ditekan */
+::-webkit-scrollbar-track:active {
+  background: #ccc;
+  border-radius: 6px;
+  /* Warna background scrollbar track saat thumb ditekan */
+}
+
 @layer components {
   /* main */
   .main-container {

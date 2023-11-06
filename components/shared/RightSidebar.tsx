@@ -5,12 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-export default function RightSidebar(){
+export default function RightSidebar() {
     const pathname = usePathname()
-    return(
+    return (
         <section className="custom-scrollbar rightsidebar">
-            <div className="flex w-full flex-1 flex-col gap-6 px-6">
-                <h1 className="head-text text-center">Admin Panel</h1>
+            <div className="flex w-[200px] flex-1 flex-col justify-center gap-6 px-6">
+                {/* <h1 className="head-text text-center">Admin Panel</h1>
                 {adminLink.map((link) => {
                     const isActive = (pathname.includes(link.route) && link.route.length > 1) || pathname === link.route
 
@@ -25,7 +25,8 @@ export default function RightSidebar(){
                             <p className="text-light-1">{link.label}</p>
                         </Link>
                     )
-                })}
+                })} */}
+                <p className="text-white text-body-medium">"Never discourage anyone who continually makes progress, no matter how slow."</p>
             </div>
         </section>
     )
