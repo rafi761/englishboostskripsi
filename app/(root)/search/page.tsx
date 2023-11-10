@@ -5,15 +5,17 @@ import Searchbar from "@/components/shared/Searchbar"
 import Pagination from "@/components/shared/Pagination"
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions"
 
+export const revalidate = 0
+
 export default async function Page({
     searchParams
-}: {searchParams: { [key: string]: string | undefined } }){
+}: { searchParams: { [key: string]: string | undefined } }) {
 
     const user = await currentUser()
-    if(!user) return null
+    if (!user) return null
 
     const userInfo = await fetchUser(user.id)
-    if(!userInfo?.onboarded) redirect("/onboarding")
+    if (!userInfo?.onboarded) redirect("/onboarding")
 
     const result = await fetchUsers({
         userId: user.id,
@@ -22,19 +24,19 @@ export default async function Page({
         pageSize: 10
     })
 
-    return(
+    return (
         <section>
             <h1 className="head-text mb-10">Search</h1>
 
             <Searchbar routeType="search" />
 
             <div className="mt-14 flex flex-col gap-9">
-                { result.users.length === 0 ? (
+                {result.users.length === 0 ? (
                     <p className="no-result">No result</p>
-                ): (
+                ) : (
                     <>
                         {result.users.map((person) => (
-                            <UserCard 
+                            <UserCard
                                 key={person.id}
                                 id={person.id}
                                 name={person.name}
@@ -44,12 +46,12 @@ export default async function Page({
                             />
                         ))}
                     </>
-                ) }
+                )}
             </div>
 
-            <Pagination 
+            <Pagination
                 path="search"
-                pageNumber={searchParams?.page ? +searchParams.page: 1}
+                pageNumber={searchParams?.page ? +searchParams.page : 1}
                 isNext={result.isNext}
             />
         </section>
