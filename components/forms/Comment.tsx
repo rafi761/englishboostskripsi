@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"
 import { z } from "zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ import { Button } from "../ui/button";
 
 import { commentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface Props {
   threadId: string;
@@ -27,6 +29,7 @@ interface Props {
 }
 
 function Comment({ threadId, currentUserImg, currentUserId }: Props) {
+  const [isLoading, setIsLoading] = useState(false)
   const pathname = usePathname();
 
   const form = useForm<z.infer<typeof commentValidation>>({
@@ -37,14 +40,20 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
   });
 
   const onSubmit = async (values: z.infer<typeof commentValidation>) => {
-    await addCommentToThread(
-      threadId,
-      values.thread,
-      JSON.parse(currentUserId),
-      pathname
-    );
+    try {
+      setIsLoading(true)
+      await addCommentToThread(
+        threadId,
+        values.thread,
+        JSON.parse(currentUserId),
+        pathname
+      );
 
-    form.reset();
+      form.reset();
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -76,8 +85,18 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
           )}
         />
 
-        <Button type='submit' className='comment-form_btn'>
-          Reply
+        <Button type='submit' className='comment-form_btn' disabled={isLoading}>
+          {isLoading ? (
+            <ClipLoader
+              color="#fff"
+              loading={isLoading}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Reply"
+          )}
         </Button>
       </form>
     </Form>

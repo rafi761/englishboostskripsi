@@ -7,21 +7,21 @@ import { fetchThreadById } from "@/lib/actions/thread.actions"
 
 export const revalidate = 0
 
-export default async function Page({params}: {params: {id: string}}){
-    if(!params.id) return null
-    
+export default async function Page({ params }: { params: { id: string } }) {
+    if (!params.id) return null
+
     const user = await currentUser()
-    if(!user) return null
+    if (!user) return null
 
     const userInfo = await fetchUser(user.id)
-    if(!userInfo?.onboarded) redirect("/onboarding")
+    if (!userInfo?.onboarded) redirect("/onboarding")
 
     const thread = await fetchThreadById(params.id)
 
-    return(
+    return (
         <section className="relative">
             <div>
-                <ThreadCard 
+                <ThreadCard
                     id={thread._id}
                     currentUserId={user.id}
                     parentId={thread.parentId}
@@ -33,7 +33,7 @@ export default async function Page({params}: {params: {id: string}}){
             </div>
 
             <div className="mt-7">
-                <Comment 
+                <Comment
                     threadId={params.id}
                     currentUserImg={userInfo.image}
                     currentUserId={JSON.stringify(userInfo._id)}
@@ -42,17 +42,17 @@ export default async function Page({params}: {params: {id: string}}){
 
             <div className='mt-10'>
                 {thread.children.map((childItem: any) => (
-                <ThreadCard
-                    key={childItem._id}
-                    id={childItem._id}
-                    currentUserId={user.id}
-                    parentId={childItem.parentId}
-                    content={childItem.text}
-                    author={childItem.author}
-                    createdAt={childItem.createdAt}
-                    comments={childItem.children}
-                    isComment
-                />
+                    <ThreadCard
+                        key={childItem._id}
+                        id={childItem._id}
+                        currentUserId={user.id}
+                        parentId={childItem.parentId}
+                        content={childItem.text}
+                        author={childItem.author}
+                        createdAt={childItem.createdAt}
+                        comments={childItem.children}
+                        isComment
+                    />
                 ))}
             </div>
         </section>

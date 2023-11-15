@@ -1,49 +1,58 @@
 "use client"
 
+import { useState } from "react"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "../ui/textarea"
 import { threadValidation } from "@/lib/validations/thread"
 import { createThread } from "@/lib/actions/thread.actions"
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface Props {
     userId: string
 }
 
-export default function PostThread({userId}: Props){
+export default function PostThread({ userId }: Props) {
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const pathname = usePathname()
 
     const form = useForm<z.infer<typeof threadValidation>>({
         resolver: zodResolver(threadValidation),
         defaultValues: {
-        thread: "",
-        accountId: userId,
+            thread: "",
+            accountId: userId,
         },
     })
 
     const onSubmit = async (values: z.infer<typeof threadValidation>) => {
-        await createThread({
-            text: values.thread,
-            author: userId,
-            path: pathname
-        })
+        try {
+            setIsLoading(true)
+            await createThread({
+                text: values.thread,
+                author: userId,
+                path: pathname
+            })
 
-        router.push("/discussion")
+            router.push("/discussion")
+            setIsLoading(false)
+        } catch (error) {
+            console.log(error)
+        }
     };
 
-    return(
+    return (
         <Form {...form}>
             <form
                 className='mt-10 flex flex-col justify-start gap-10'
@@ -65,8 +74,18 @@ export default function PostThread({userId}: Props){
                     )}
                 />
 
-                <Button type='submit' className='bg-primary-500'>
-                 Post Thread
+                <Button type='submit' className='bg-primary-500' disabled={isLoading}>
+                    {isLoading ? (
+                        <ClipLoader
+                            color="#fff"
+                            loading={isLoading}
+                            size={30}
+                            aria-label="Loading Spinner"
+                            data-testid="loader"
+                        />
+                    ) : (
+                        "Post Discussion"
+                    )}
                 </Button>
             </form>
         </Form>
