@@ -36,25 +36,29 @@ export default async function Page({ params, searchParams }: {
                     ))}
                 </div>
 
-                <div className="flex items-center gap-2">
-                    <Image
-                        src="/assets/question.png"
-                        alt="Question mark"
-                        width={24}
-                        height={24}
-                        className="object-cover"
-                    />
-                    <p className="text-small-regular text-light-1"><span className="text-small-medium">Tips:</span> klik pada setiap kosa kata untuk mendapatkan arti dari kata tersebut</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Image
-                        src="/assets/question.png"
-                        alt="Question mark"
-                        width={24}
-                        height={24}
-                        className="object-cover"
-                    />
-                    <p className="text-small-regular text-light-1"><span className="text-small-medium">Tips:</span> kata berwarna ungu menandakan bahwa arti dari kata tersebut sudah muncul dibawahnya</p>
+                <div className="flex flex-col gap-y-2">
+                    <div className="flex items-center gap-2">
+                        <Image
+                            src="/assets/question.png"
+                            alt="Question mark"
+                            width={24}
+                            height={24}
+                            className="object-cover"
+                        />
+                        <p className="text-small-regular text-light-1">Selamat datang di fitur Belajar Vocabulary! Fitur ini dirancang untuk membantu Anda meningkatkan kosakata bahasa Inggris Anda. Di bawah ini adalah panduan langkah demi langkah untuk memanfaatkan fitur ini:</p>
+                    </div>
+                    <div className="flex flex-col">
+                        <h2 className="text-base-regular text-light-1 font-semibold">Pemilihan Level</h2>
+                        <p className="text-small-regular text-light-1">Pilih level yang sesuai dengan tingkat kemampuan Anda. Terdapat enam level yang berbeda, dari yang mudah hingga yang sulit.</p>
+                    </div>
+                    <div className="flex flex-col">
+                        <h2 className="text-base-regular text-light-1 font-semibold">Daftar Kosakata</h2>
+                        <p className="text-small-regular text-light-1">Setiap level memiliki daftar kosakata yang berbeda. Temukan kata yang ingin Anda pelajari.</p>
+                    </div>
+                    <div className="flex flex-col">
+                        <h2 className="text-base-regular text-light-1 font-semibold">Klik pada Kosakata</h2>
+                        <p className="text-small-regular text-light-1">Klik pada salah satu kosakata untuk mengetahui artinya. Tunggu sejenak, dan arti kata akan muncul di layar.</p>
+                    </div>
                 </div>
 
                 <SearchbarVocab routeType="vocabulary" level={params.level} />

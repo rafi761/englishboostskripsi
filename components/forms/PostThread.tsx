@@ -74,7 +74,7 @@ export default function PostThread({ userId }: Props) {
                     )}
                 />
 
-                <Button type='submit' className='bg-primary-500' disabled={isLoading}>
+                <Button type='submit' className={`bg-primary-500 ${isLoading && `bg-gray-600`}`} disabled={isLoading}>
                     {isLoading ? (
                         <ClipLoader
                             color="#fff"
@@ -84,7 +84,7 @@ export default function PostThread({ userId }: Props) {
                             data-testid="loader"
                         />
                     ) : (
-                        "Post Discussion"
+                        `${isLoading ? "Loading..." : "Post Discussion"}`
                     )}
                 </Button>
             </form>
