@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 // import { currentUser } from "@clerk/nextjs"
 // import { fetchUser } from "@/lib/actions/user.actions"
 import { useRouter } from "next/navigation"
@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button"
 import { multipleQuizAdvance } from "@/constants/multiplechoice"
 
 interface Result {
-  score: number;
-  correctAnswers: number;
-  wrongAnswers: number;
+    score: number;
+    correctAnswers: number;
+    wrongAnswers: number;
 }
 
-export default function Page(){
+export default function Page() {
     const router = useRouter()
+    const [questions, setQuestions] = useState(multipleQuizAdvance.questions);
     const [activeQuestion, setActiveQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
     const [checked, setChecked] = useState(false);
@@ -25,7 +26,16 @@ export default function Page(){
         wrongAnswers: 0,
     });
 
-    const { questions } = multipleQuizAdvance;
+    const shuffleQuestions = () => {
+        const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+        setQuestions(shuffledQuestions);
+    };
+
+    useEffect(() => {
+        shuffleQuestions()
+    }, [])
+
+    // const { questions } = multipleQuizAdvance;
     const { question, answers, correctAnswer } = questions[activeQuestion];
 
     // Select and check answer
@@ -33,11 +43,11 @@ export default function Page(){
         setChecked(true);
         setSelectedAnswerIndex(idx);
         if (answer === correctAnswer) {
-        setSelectedAnswer(true);
-        console.log('true');
+            setSelectedAnswer(true);
+            console.log('true');
         } else {
-        setSelectedAnswer(false);
-        console.log('false');
+            setSelectedAnswer(false);
+            console.log('false');
         }
     };
 
@@ -45,26 +55,26 @@ export default function Page(){
     const nextQuestion = () => {
         setSelectedAnswerIndex(null);
         setResult((prev) =>
-        selectedAnswer
-            ? {
-                ...prev,
-                score: prev.score + 5,
-                correctAnswers: prev.correctAnswers + 1,
-            }
-            : {
-                ...prev,
-                wrongAnswers: prev.wrongAnswers + 1,
-            }
+            selectedAnswer
+                ? {
+                    ...prev,
+                    score: prev.score + 5,
+                    correctAnswers: prev.correctAnswers + 1,
+                }
+                : {
+                    ...prev,
+                    wrongAnswers: prev.wrongAnswers + 1,
+                }
         );
         if (activeQuestion !== questions.length - 1) {
-        setActiveQuestion((prev) => prev + 1);
+            setActiveQuestion((prev) => prev + 1);
         } else {
-        setActiveQuestion(0);
-        setShowResult(true);
+            setActiveQuestion(0);
+            setShowResult(true);
         }
         setChecked(false);
-}
-    return(
+    }
+    return (
         <section className="flex flex-col gap-5 max-w-3xl account-form_input p-10 rounded-lg mx-auto">
             <div>
                 <h1 className="text-heading3-bold">Hello</h1>
@@ -97,21 +107,21 @@ export default function Page(){
                         )}
                     </div>
                 </>
-            ): (
-                 <div className='flex flex-col gap-2'>
+            ) : (
+                <div className='flex flex-col gap-2'>
                     <h3 className="text-heading1-bold text-indigo-700">Results</h3>
                     <h3 className="text-heading2-bold">{Math.floor((result.score / 75) * 100)}%</h3>
                     <p>
-                    Total Questions: <span>{questions.length}</span>
+                        Total Questions: <span>{questions.length}</span>
                     </p>
                     <p>
-                    Total Score: <span>{result.score + 25}</span>
+                        Total Score: <span>{result.score + 25}</span>
                     </p>
                     <p>
-                    Correct Answers: <span>{result.correctAnswers}</span>
+                        Correct Answers: <span>{result.correctAnswers}</span>
                     </p>
                     <p>
-                    Wrong Answers: <span>{result.wrongAnswers}</span>
+                        Wrong Answers: <span>{result.wrongAnswers}</span>
                     </p>
                     <Button className="" onClick={() => router.push("/quiz")}>Restart</Button>
                 </div>
